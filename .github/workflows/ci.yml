@@ -1,0 +1,30 @@
+name: cos316-test-ci
+
+on:
+  push: # Run CI for push operations on all branches
+
+jobs:
+  ci-build:
+    # Our CI build action will run on a Ubuntu virtual machine
+    runs-on: ubuntu-latest
+
+    steps:
+      # Makes sure that our repository is available
+      #
+      # All further actions will run from within this repository
+      - uses: actions/checkout@v3
+
+      # Simply build and run our program for now. This will
+      # automatically fail the CI if the build or run operations fail
+      # (return with a non-zero error code).
+      - name: build
+        run: go build
+
+      # Execute our program. It should run without returning an
+      # error-code.
+      - name: run
+        run: ./cos316test
+
+      # Run any tests defined in the go source code:
+      - name: test
+        run: go test ./...
